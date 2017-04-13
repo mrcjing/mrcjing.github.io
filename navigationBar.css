@@ -1,0 +1,109 @@
+﻿
+	/*1、导航栏样式初步设计*/	
+		*{
+			margin: 0;padding:0; /* 清除所有效果 */
+		}
+		ul{list-style: none;}	/* 清除ul内部样式 */
+		
+		body {
+			background-color: aliceblue;
+			font: 16px "微软雅黑";	
+		}
+		
+		a {
+			color: gray;
+			text-decoration: none;
+		}
+		
+		nav{   	
+			width: 40%;		/*响应式*/
+			height: 50px;
+			/* background-color: pink;  */ 
+			margin: 100px auto;
+			background:-moz-linear-gradient(top,#292929,#252525);				/*火狐*/ 
+			background: -webkit-linear-gradient(top,#292929,#252525); 			/*背景颜色使用渐变-谷歌*/
+			
+			border-top: 2px solid #222;
+			border-bottom: 2px solid #1b1b1b;
+			
+			min-width: 500px;	/*响应式，给nav指定一个最小宽距离，响应时不掉下来*/
+		}
+		
+		/*css3特有的"弹性盒子"布局：nav中有">"表示子代选择器*/
+		nav>ul {
+			display: -moz-box;		/*兼容火狐*/			
+			display: -webkit-box;	/*给父亲指定box布局(有严重兼容性问题！谷歌浏览器：webkit) */			
+			display: box;			/*旧IE*/
+			width:100%;				/*火狐必须指定外盒宽,-moz-box-flex才有效*/
+		}
+		
+		nav>ul>li {	
+			
+			-moz-box-flex:1;				
+			-webkit-box-flex:1;		/*给孩子指定box-flex布局*/
+			box-flex:1;
+			/*盒子模型可以平均分配li,但没有位置设置*/
+			text-align: center;
+			height: 100%;
+			line-height: 50px;
+			position: relative;		/*子菜单 决定的*/
+		}
+		
+	/*2、导航栏下拉菜单样式设计*/		
+		nav li:hover {		/*经过*/
+			background: -moz-linear-gradient(top,#1c1c1c,#1b1b1b);	/*火狐*/
+			background: -webkit-linear-gradient(top,#1c1c1c,#1b1b1b);	/*谷歌*/
+		}
+		
+		.subnav {			/*下拉菜单，建议一定采用定位,“子决父相位，所以父亲也用定位" */
+			width: 100%; 	/*保证和父一样宽*/
+			position: absolute;
+			top: 50px;
+			left: 0;
+			-moz-perspective:400px;
+			-webkit-perspective:400px;	/*3D翻转的perspective透视（近大远小）*/
+			/*3D导航栏最后解决bug，去掉一级子菜单高度，避免鼠标经过触发，只有通过父菜单来触发*/
+			max-height: 0;
+		}
+		
+		.subnav li {		/*下拉菜单中li添加颜色*/
+			background: -moz-linear-gradient(top,#292929,#252525);	/*火狐*/
+			background: -webkit-linear-gradient(top,#292929,#252525); /*背景颜色使用渐变-谷歌*/
+			/*鼠标经过显示下拉菜单，①可用js，②也可用css3的透明度opacity设置*/
+			opacity: 0;		/*默认透明，下面设置鼠标经过打开*/
+			transform:rotateY(90deg);	/*180度3D翻转*/
+			transition:opacity .4s , transform .5s;		/*①0.4s来从0到1渐变过渡变化,②0.5秒后翻转。多个效果时单独再写会覆盖，直接逗号隔开接着写*/
+			
+		}
+		.subnav li:nth-child(1){		/*3D翻转-让每个li中内容逐次进行*/
+			-moz-transition-delay:160ms; 
+			-webkit-transition-delay:160ms; 
+		}
+		.subnav li:nth-child(2){	
+			-moz-transition-delay:80ms; 
+			-webkit-transition-delay:80ms; 
+		}
+		.subnav li:nth-child(3){	
+			-moz-transition-delay:0ms; 
+			-webkit-transition-delay:0ms; 
+		}
+		nav>ul>li:hover .subnav li {
+			opacity: 1;	
+			transform:none;		/*如果这没有rotate(0deg)零度或者none，上面翻转出不来的*/
+		}
+		nav>ul>li:hover .subnav li:nth-child(1) {	/*3D效果好看，和上面取反即可*/
+			-moz-transition-delay:0ms; 
+			-webkit-transition-delay:0ms; 
+		}
+		nav>ul>li:hover .subnav li:nth-child(2) {	/*3D效果好看，和上面取反即可*/
+			-moz-transition-delay:80ms; 
+			-webkit-transition-delay:80ms; 
+		}
+		nav>ul>li:hover .subnav li:nth-child(3) {	/*3D效果好看，和上面取反即可*/
+			-moz-transition-delay:160ms; 
+			-webkit-transition-delay:160ms; 
+		}
+	
+	/*3、导航栏下拉菜单3D翻转设计,上面transform翻转基本已经实现，见鼠标经过前设置*/
+			
+		
